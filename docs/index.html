@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RemoteWebCam - Turn Your Phone into a Webcam</title>
-    <meta name="description" content="Free, open-source app to use your phone as a webcam for your PC. Privacy-focused, works with Zoom, Teams, and more.">
+    <meta name="description"
+        content="Free, open-source app to use your phone as a webcam for your PC. Privacy-focused, works with Zoom, Teams, and more.">
     <meta name="keywords" content="webcam, android, windows, remote camera, virtual camera, phone webcam">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="RemoteWebCam">
-    <meta property="og:description" content="Turn your phone into a high-quality webcam for your PC">
-    <meta property="og:image" content="assets/og-image.png">
-    <meta property="og:type" content="website">
-    
+
     <style>
         :root {
             --bg-dark: #1A1520;
@@ -22,74 +17,71 @@
             --text-secondary: #9A9DAE;
             --accent-primary: #8A7088;
             --accent-secondary: #5C4B66;
-            --palette-3: #9A9DAE;
             --palette-4: #86859A;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
             line-height: 1.6;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
-        /* Header */
+
         header {
             padding: 20px 0;
             background: linear-gradient(180deg, var(--bg-card) 0%, transparent 100%);
         }
-        
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--text-primary);
             text-decoration: none;
         }
-        
+
         .logo span {
             color: var(--accent-primary);
         }
-        
+
         .nav-links {
             display: flex;
             gap: 30px;
             list-style: none;
         }
-        
+
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.3s;
         }
-        
+
         .nav-links a:hover {
             color: var(--accent-primary);
         }
-        
-        /* Hero */
+
         .hero {
             text-align: center;
             padding: 80px 0;
         }
-        
+
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 20px;
@@ -98,21 +90,21 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .hero p {
             font-size: 1.3rem;
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto 40px;
         }
-        
+
         .hero-buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
         }
-        
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -123,73 +115,71 @@
             font-weight: 600;
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        
+
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
+
         .btn-primary {
             background: var(--accent-secondary);
             color: white;
         }
-        
+
         .btn-secondary {
             background: var(--bg-card);
             color: var(--text-primary);
             border: 1px solid var(--palette-4);
         }
-        
-        /* Features */
+
         .features {
             padding: 80px 0;
         }
-        
+
         .features h2 {
             text-align: center;
             font-size: 2rem;
             margin-bottom: 50px;
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
-        
+
         .feature-card {
             background: var(--bg-card);
             padding: 30px;
             border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         .feature-icon {
             font-size: 2rem;
             margin-bottom: 15px;
         }
-        
+
         .feature-card h3 {
             margin-bottom: 10px;
             color: var(--text-primary);
         }
-        
+
         .feature-card p {
             color: var(--text-secondary);
         }
-        
-        /* Downloads */
+
         #downloads {
             padding: 80px 0;
             background: var(--bg-card);
         }
-        
+
         #downloads h2 {
             text-align: center;
             font-size: 2rem;
             margin-bottom: 50px;
         }
-        
+
         .download-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -197,7 +187,7 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .download-card {
             background: var(--bg-dark);
             padding: 40px;
@@ -205,57 +195,56 @@
             text-align: center;
             border: 1px solid var(--palette-4);
         }
-        
+
         .download-card .icon {
             font-size: 4rem;
             margin-bottom: 20px;
         }
-        
+
         .download-card h3 {
             margin-bottom: 10px;
         }
-        
+
         .download-card p {
             color: var(--text-secondary);
             margin-bottom: 20px;
         }
-        
+
         .download-card .btn {
             width: 100%;
             justify-content: center;
         }
-        
+
         .version-info {
             margin-top: 15px;
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
-        
-        /* How it works */
+
         .how-it-works {
             padding: 80px 0;
         }
-        
+
         .how-it-works h2 {
             text-align: center;
             font-size: 2rem;
             margin-bottom: 50px;
         }
-        
+
         .steps {
             display: flex;
             flex-wrap: wrap;
             gap: 30px;
             justify-content: center;
         }
-        
+
         .step {
             flex: 1;
             min-width: 200px;
             max-width: 280px;
             text-align: center;
         }
-        
+
         .step-number {
             width: 50px;
             height: 50px;
@@ -268,94 +257,49 @@
             font-weight: bold;
             margin: 0 auto 20px;
         }
-        
+
         .step h3 {
             margin-bottom: 10px;
         }
-        
+
         .step p {
             color: var(--text-secondary);
         }
-        
-        /* Requirements */
-        .requirements {
-            padding: 80px 0;
-            background: var(--bg-card);
-        }
-        
-        .requirements h2 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 50px;
-        }
-        
-        .req-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .req-list h3 {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .req-list ul {
-            list-style: none;
-        }
-        
-        .req-list li {
-            padding: 8px 0;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .req-list li::before {
-            content: '✓';
-            color: var(--accent-primary);
-        }
-        
-        /* Footer */
+
         footer {
             padding: 40px 0;
             text-align: center;
             color: var(--text-secondary);
         }
-        
+
         footer a {
             color: var(--accent-primary);
             text-decoration: none;
         }
-        
+
         .github-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-top: 20px;
         }
-        
-        /* Responsive */
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
             }
-            
+
             .hero p {
                 font-size: 1rem;
             }
-            
+
             .nav-links {
                 display: none;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav class="container">
@@ -363,7 +307,6 @@
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#downloads">Downloads</a></li>
-                <li><a href="#how-it-works">How it Works</a></li>
                 <li><a href="https://github.com/AbQaadir/RemoteWebCam">GitHub</a></li>
             </ul>
         </nav>
@@ -373,14 +316,11 @@
         <section class="hero">
             <div class="container">
                 <h1>Turn Your Phone Into a Webcam</h1>
-                <p>Free, open-source app to use your Android phone as a high-quality webcam for your PC. Works with Zoom, Teams, Google Meet, and more.</p>
+                <p>Free, open-source app to use your Android phone as a high-quality webcam for your PC. Works with
+                    Zoom, Teams, Google Meet, and more.</p>
                 <div class="hero-buttons">
-                    <a href="#downloads" class="btn btn-primary">
-                        📥 Download Now
-                    </a>
-                    <a href="https://github.com/AbQaadir/RemoteWebCam" class="btn btn-secondary">
-                        ⭐ Star on GitHub
-                    </a>
+                    <a href="#downloads" class="btn btn-primary">📥 Download Now</a>
+                    <a href="https://github.com/AbQaadir/RemoteWebCam" class="btn btn-secondary">⭐ Star on GitHub</a>
                 </div>
             </div>
         </section>
@@ -431,25 +371,23 @@
                         <div class="icon">📱</div>
                         <h3>Android App</h3>
                         <p>Install on your phone to stream camera</p>
-                        <a href="https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam.apk" class="btn btn-primary">
-                            Download APK
-                        </a>
+                        <a href="https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam.apk"
+                            class="btn btn-primary">Download APK</a>
                         <p class="version-info">Android 5.0+ required</p>
                     </div>
                     <div class="download-card">
                         <div class="icon">💻</div>
                         <h3>Windows App</h3>
                         <p>Receive stream and use as webcam</p>
-                        <a href="https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam-Setup.exe" class="btn btn-primary">
-                            Download Installer
-                        </a>
+                        <a href="https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebcam.exe"
+                            class="btn btn-primary">Download EXE</a>
                         <p class="version-info">Windows 10+ required</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="how-it-works" id="how-it-works">
+        <section class="how-it-works">
             <div class="container">
                 <h2>How It Works</h2>
                 <div class="steps">
@@ -476,40 +414,15 @@
                 </div>
             </div>
         </section>
-
-        <section class="requirements">
-            <div class="container">
-                <h2>Requirements</h2>
-                <div class="req-grid">
-                    <div class="req-list">
-                        <h3>📱 Android</h3>
-                        <ul>
-                            <li>Android 5.0 or higher</li>
-                            <li>Camera permission</li>
-                            <li>Wi-Fi connection</li>
-                        </ul>
-                    </div>
-                    <div class="req-list">
-                        <h3>💻 Windows</h3>
-                        <ul>
-                            <li>Windows 10 or higher</li>
-                            <li>OBS Studio installed</li>
-                            <li>Same network as phone</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>
         <div class="container">
             <p>Open-source under MIT License</p>
-            <a href="https://github.com/AbQaadir/RemoteWebCam" class="github-link">
-                ⭐ Star on GitHub
-            </a>
+            <a href="https://github.com/AbQaadir/RemoteWebCam" class="github-link">⭐ Star on GitHub</a>
             <p style="margin-top: 20px;">Made with ❤️ by <a href="https://github.com/AbQaadir">AbQaadir</a></p>
         </div>
     </footer>
 </body>
+
 </html>
