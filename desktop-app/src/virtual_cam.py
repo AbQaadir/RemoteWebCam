@@ -1,5 +1,5 @@
 """
-Virtual Camera Module
+Virtual Camera Module - Optimized for low latency
 Handles routing frames to a virtual camera device for use in Zoom, Teams, etc.
 """
 
@@ -20,25 +20,28 @@ class VirtualCamera:
         self._lock = threading.Lock()
         self._pyvirtualcam = None
         self._available = False
+        self._cv2 = None
         
-        # Try to import pyvirtualcam
+        # Cache for resize parameters (avoids recalculation)
+        self._last_input_shape = None
+        self._crop_params = None
+        
+        # Try to import dependencies
         try:
             import pyvirtualcam
+            import cv2
             self._pyvirtualcam = pyvirtualcam
+            self._cv2 = cv2
             self._available = True
         except ImportError:
             print("Warning: pyvirtualcam not installed. Virtual camera disabled.")
-            print("Install with: pip install pyvirtualcam")
-            print("Also requires OBS Virtual Camera to be installed.")
     
     @property
     def is_available(self) -> bool:
-        """Check if virtual camera is available"""
         return self._available
     
     @property
     def is_enabled(self) -> bool:
-        """Check if virtual camera is currently enabled"""
         return self._enabled and self._camera is not None
     
     def start(self, width: int = 1280, height: int = 720, fps: int = 30) -> bool:
@@ -81,26 +84,59 @@ class VirtualCamera:
                     pass
                 self._camera = None
             self._enabled = False
+            self._last_input_shape = None
+            self._crop_params = None
+    
+    def _calculate_crop_params(self, h: int, w: int):
+        """Calculate crop parameters for 16:9 conversion (cached)"""
+        target_aspect = 16 / 9
+        current_aspect = w / h
+        
+        if abs(current_aspect - target_aspect) < 0.01:
+            # Already 16:9
+            self._crop_params = (0, 0, w, h, False)
+        elif current_aspect < target_aspect:
+            # Portrait - crop top/bottom
+            new_height = int(w / target_aspect)
+            y_offset = (h - new_height) // 2
+            self._crop_params = (0, y_offset, w, new_height, True)
+        else:
+            # Wider than 16:9 - crop left/right
+            new_width = int(h * target_aspect)
+            x_offset = (w - new_width) // 2
+            self._crop_params = (x_offset, 0, new_width, h, True)
     
     def send_frame(self, frame: np.ndarray):
-        """Send a frame to the virtual camera"""
+        """Send a frame to the virtual camera (optimized for speed)"""
         if not self._enabled or self._camera is None:
             return
         
-        with self._lock:
-            try:
-                # Resize frame if needed
-                h, w = frame.shape[:2]
-                if w != self._width or h != self._height:
-                    import cv2
-                    frame = cv2.resize(frame, (self._width, self._height))
-                
-                # Send frame
-                self._camera.send(frame)
-                self._camera.sleep_until_next_frame()
-                
-            except Exception as e:
-                print(f"Error sending frame: {e}")
+        try:
+            h, w = frame.shape[:2]
+            
+            # Recalculate crop params only if frame size changed
+            if self._last_input_shape != (h, w):
+                self._last_input_shape = (h, w)
+                self._calculate_crop_params(h, w)
+            
+            # Fast crop if needed
+            x, y, cw, ch, needs_crop = self._crop_params
+            if needs_crop:
+                frame = frame[y:y+ch, x:x+cw]
+            
+            # Fast resize using INTER_LINEAR (fastest with decent quality)
+            if frame.shape[1] != self._width or frame.shape[0] != self._height:
+                frame = self._cv2.resize(
+                    frame, 
+                    (self._width, self._height),
+                    interpolation=self._cv2.INTER_LINEAR
+                )
+            
+            # Send immediately
+            self._camera.send(frame)
+            
+        except Exception as e:
+            pass  # Silently ignore errors to prevent log spam
     
     def get_device_name(self) -> Optional[str]:
         """Get the virtual camera device name"""
@@ -109,52 +145,26 @@ class VirtualCamera:
         return None
 
 
-# Alternative: Use FFmpeg-based virtual camera (fallback)
+# Simplified fallback class
 class FFmpegVirtualCamera:
-    """
-    Fallback virtual camera using FFmpeg.
-    Requires FFmpeg with dshow input device support.
-    """
+    """Placeholder for FFmpeg-based virtual camera"""
     
     def __init__(self):
-        self._process = None
-        self._enabled = False
-        self._available = self._check_ffmpeg()
-    
-    def _check_ffmpeg(self) -> bool:
-        """Check if FFmpeg is available"""
-        import subprocess
-        try:
-            result = subprocess.run(
-                ["ffmpeg", "-version"],
-                capture_output=True,
-                timeout=5
-            )
-            return result.returncode == 0
-        except Exception:
-            return False
+        self._available = False
     
     @property
     def is_available(self) -> bool:
-        return self._available
+        return False
     
     @property
     def is_enabled(self) -> bool:
-        return self._enabled
+        return False
     
     def start(self, width: int = 1280, height: int = 720, fps: int = 30) -> bool:
-        """Start FFmpeg virtual camera output"""
-        # This would require additional setup with a virtual camera driver
-        # For now, this is a placeholder for future implementation
         return False
     
     def stop(self):
-        """Stop FFmpeg process"""
-        if self._process:
-            self._process.terminate()
-            self._process = None
-        self._enabled = False
+        pass
     
     def send_frame(self, frame: np.ndarray):
-        """Send frame to FFmpeg"""
         pass

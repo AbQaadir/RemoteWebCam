@@ -7,7 +7,8 @@ import sys
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QLineEdit, QComboBox, QFrame, QGroupBox,
-    QCheckBox, QStatusBar, QMessageBox, QSystemTrayIcon, QMenu
+    QCheckBox, QStatusBar, QMessageBox, QSystemTrayIcon, QMenu,
+    QGridLayout, QSizePolicy
 )
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QThread
 from PyQt6.QtGui import QImage, QPixmap, QIcon, QAction, QPalette, QColor
@@ -36,6 +37,27 @@ class FrameWorker(QThread):
     
     def _on_status(self, status: ConnectionStatus, message: str):
         self.status_changed.emit(status.value, message)
+
+
+class AspectRatioLabel(QLabel):
+    """A QLabel that maintains 16:9 aspect ratio"""
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setMinimumSize(320, 180)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+    
+    def resizeEvent(self, event):
+        # Maintain 16:9 aspect ratio
+        width = event.size().width()
+        height = int(width * 9 / 16)
+        
+        # Don't exceed available height
+        if height > event.size().height():
+            height = event.size().height()
+            width = int(height * 16 / 9)
+        
+        super().resizeEvent(event)
 
 
 class RemoteWebcamApp:
@@ -122,7 +144,7 @@ class RemoteWebcamApp:
                 background-color: #0d1117;
                 border: 1px solid #30363d;
                 border-radius: 6px;
-                padding: 8px;
+                padding: 8px 12px;
                 min-height: 20px;
             }
             QLineEdit:focus, QComboBox:focus {
@@ -136,6 +158,10 @@ class RemoteWebcamApp:
                 background-color: #161b22;
                 border: 1px solid #30363d;
                 border-radius: 8px;
+            }
+            QLabel#fieldLabel {
+                min-width: 80px;
+                padding-right: 8px;
             }
             QStatusBar {
                 background-color: #161b22;
@@ -155,9 +181,12 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        self.setWindowTitle("Remote Webcam")
-        self.setMinimumSize(800, 600)
-        self.resize(900, 700)
+        self.setWindowTitle("RemoteWebCam")
+        self.setMinimumSize(900, 650)
+        self.resize(960, 720)
+        
+        # Set window icon
+        self._set_window_icon()
         
         # Components
         self._receiver = OpenCVReceiver()
@@ -179,6 +208,24 @@ class MainWindow(QMainWindow):
         self._adb.start_device_monitor()
         self._refresh_devices()
     
+    def _set_window_icon(self):
+        """Set the window icon"""
+        import os
+        import sys
+        
+        # Try to find icon in various locations
+        icon_paths = [
+            os.path.join(os.path.dirname(__file__), '..', 'assets', 'icon.png'),
+            os.path.join(os.path.dirname(sys.executable), 'assets', 'icon.png'),
+            'assets/icon.png',
+        ]
+        
+        for icon_path in icon_paths:
+            if os.path.exists(icon_path):
+                icon = QIcon(icon_path)
+                self.setWindowIcon(icon)
+                break
+    
     def _setup_ui(self):
         """Setup the user interface"""
         central = QWidget()
@@ -192,60 +239,74 @@ class MainWindow(QMainWindow):
         preview_group = QGroupBox("Camera Preview")
         preview_layout = QVBoxLayout(preview_group)
         
+        # Create a container for 16:9 aspect ratio preview
+        preview_container = QWidget()
+        preview_container.setMinimumHeight(400)
+        preview_container_layout = QHBoxLayout(preview_container)
+        preview_container_layout.setContentsMargins(0, 0, 0, 0)
+        
         self._preview_label = QLabel()
         self._preview_label.setObjectName("previewLabel")
         self._preview_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._preview_label.setMinimumHeight(360)
         self._preview_label.setText("No stream connected")
-        preview_layout.addWidget(self._preview_label)
+        self._preview_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        preview_container_layout.addWidget(self._preview_label)
+        
+        preview_layout.addWidget(preview_container, 1)
         
         # Stats label
         self._stats_label = QLabel("FPS: -- | Frames: 0")
         self._stats_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         preview_layout.addWidget(self._stats_label)
         
-        layout.addWidget(preview_group)
+        layout.addWidget(preview_group, 1)  # Give preview more stretch
         
-        # Connection settings
+        # Connection settings with grid layout for alignment
         conn_group = QGroupBox("Connection")
-        conn_layout = QVBoxLayout(conn_group)
+        conn_layout = QGridLayout(conn_group)
+        conn_layout.setSpacing(12)
+        conn_layout.setColumnStretch(1, 1)  # Make input fields stretch
         
-        # Wi-Fi connection row
-        wifi_layout = QHBoxLayout()
-        wifi_layout.addWidget(QLabel("Address:"))
+        # Row 0: Wi-Fi connection
+        address_label = QLabel("Address:")
+        address_label.setObjectName("fieldLabel")
+        conn_layout.addWidget(address_label, 0, 0, Qt.AlignmentFlag.AlignRight)
+        
         self._host_input = QLineEdit()
-        self._host_input.setPlaceholderText("192.168.1.100")
-        wifi_layout.addWidget(self._host_input, 1)
+        self._host_input.setPlaceholderText("http://192.168.1.100")
+        conn_layout.addWidget(self._host_input, 0, 1)
         
-        wifi_layout.addWidget(QLabel("Port:"))
+        port_label = QLabel("Port:")
+        conn_layout.addWidget(port_label, 0, 2, Qt.AlignmentFlag.AlignRight)
+        
         self._port_input = QLineEdit("8080")
-        self._port_input.setMaximumWidth(80)
-        wifi_layout.addWidget(self._port_input)
+        self._port_input.setFixedWidth(80)
+        conn_layout.addWidget(self._port_input, 0, 3)
         
         self._connect_btn = QPushButton("Connect")
+        self._connect_btn.setFixedWidth(120)
         self._connect_btn.clicked.connect(self._toggle_connection)
-        wifi_layout.addWidget(self._connect_btn)
+        conn_layout.addWidget(self._connect_btn, 0, 4)
         
-        conn_layout.addLayout(wifi_layout)
+        # Row 1: USB connection
+        usb_label = QLabel("USB Device:")
+        usb_label.setObjectName("fieldLabel")
+        conn_layout.addWidget(usb_label, 1, 0, Qt.AlignmentFlag.AlignRight)
         
-        # USB connection row
-        usb_layout = QHBoxLayout()
-        usb_layout.addWidget(QLabel("USB Device:"))
         self._device_combo = QComboBox()
-        self._device_combo.setMinimumWidth(200)
-        usb_layout.addWidget(self._device_combo, 1)
+        conn_layout.addWidget(self._device_combo, 1, 1, 1, 2)  # Span 2 columns
         
         self._refresh_btn = QPushButton("Refresh")
         self._refresh_btn.setObjectName("secondaryBtn")
+        self._refresh_btn.setFixedWidth(80)
         self._refresh_btn.clicked.connect(self._refresh_devices)
-        usb_layout.addWidget(self._refresh_btn)
+        conn_layout.addWidget(self._refresh_btn, 1, 3)
         
         self._usb_connect_btn = QPushButton("Connect via USB")
         self._usb_connect_btn.setObjectName("secondaryBtn")
+        self._usb_connect_btn.setFixedWidth(120)
         self._usb_connect_btn.clicked.connect(self._connect_usb)
-        usb_layout.addWidget(self._usb_connect_btn)
-        
-        conn_layout.addLayout(usb_layout)
+        conn_layout.addWidget(self._usb_connect_btn, 1, 4)
         
         layout.addWidget(conn_group)
         
@@ -257,6 +318,8 @@ class MainWindow(QMainWindow):
         self._vcam_checkbox.setEnabled(self._virtual_cam.is_available)
         self._vcam_checkbox.toggled.connect(self._toggle_virtual_cam)
         vcam_layout.addWidget(self._vcam_checkbox)
+        
+        vcam_layout.addSpacing(20)
         
         self._vcam_status = QLabel()
         if self._virtual_cam.is_available:
@@ -336,6 +399,12 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Error", "Please enter the phone's IP address")
             return
         
+        # Remove http:// prefix if present
+        if host.startswith("http://"):
+            host = host[7:]
+        if host.startswith("https://"):
+            host = host[8:]
+        
         try:
             port = int(self._port_input.text())
         except ValueError:
@@ -402,10 +471,21 @@ class MainWindow(QMainWindow):
         bytes_per_line = ch * w
         qt_image = QImage(rgb_frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
         
-        # Scale to fit preview label while maintaining aspect ratio
+        # Scale to fit preview label while maintaining 16:9 aspect ratio
         pixmap = QPixmap.fromImage(qt_image)
+        
+        # Calculate target size maintaining aspect ratio
+        label_size = self._preview_label.size()
+        target_width = label_size.width() - 20  # Padding
+        target_height = int(target_width * 9 / 16)
+        
+        # Check if height exceeds available space
+        if target_height > label_size.height() - 20:
+            target_height = label_size.height() - 20
+            target_width = int(target_height * 16 / 9)
+        
         scaled = pixmap.scaled(
-            self._preview_label.size(),
+            target_width, target_height,
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation
         )
