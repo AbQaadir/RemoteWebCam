@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![RemoteWebCam Logo](docs/assets/logo.png)
+<img src="desktop-app/assets/icon.png" alt="RemoteWebCam Logo" width="128" height="128">
 
 **Turn your phone into a high-quality webcam for your PC** 🎥
 
@@ -11,9 +11,9 @@
 [![Windows](https://img.shields.io/badge/Windows-10+-blue.svg)](https://www.microsoft.com/windows)
 [![GitHub Stars](https://img.shields.io/github/stars/AbQaadir/RemoteWebCam?style=social)](https://github.com/AbQaadir/RemoteWebCam)
 
-[📱 Download Android APK](https://abqaadir.github.io/RemoteWebCam/#downloads) • 
-[💻 Download Windows App](https://abqaadir.github.io/RemoteWebCam/#downloads) • 
-[📖 Documentation](https://abqaadir.github.io/RemoteWebCam/)
+🌐 **[Visit Website](https://abqaadir.github.io/RemoteWebCam/)** • 
+📱 **[Download APK](https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam.apk)** • 
+💻 **[Download Windows](https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebcam.exe)**
 
 </div>
 
@@ -23,11 +23,12 @@
 
 - 🔒 **Privacy First** - All data stays on your local network, no cloud required
 - 📶 **Wi-Fi & USB** - Connect via Wi-Fi or USB (ADB port forwarding)
-- 🎥 **Virtual Camera** - Works with Zoom, Teams, Google Meet, and more
-- 📱 **Full-Screen Preview** - Modern, immersive camera UI
+- 🎥 **Virtual Camera** - Works with Zoom, Teams, Google Meet, OBS, and more
+- 📱 **Full-Screen Preview** - Modern, immersive camera UI on Android
 - 🔄 **Camera Switching** - Easily switch between front and back cameras
 - 📊 **Resolution Options** - Choose 480p, 720p, or 1080p quality
 - 🌙 **Dark Theme** - Beautiful lavender-purple dark theme
+- ⚡ **Low Latency** - Optimized for real-time streaming
 
 ## 🚀 Quick Start
 
@@ -37,10 +38,10 @@ Download and install [OBS Studio](https://obsproject.com/) - this provides the v
 
 ### 2. Download the Apps
 
-| Platform | Download |
-|----------|----------|
-| 📱 Android | [RemoteWebCam.apk](https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam.apk) |
-| 💻 Windows | [RemoteWebCam-Setup.exe](https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam-Setup.exe) |
+| Platform | Download | Requirements |
+|----------|----------|--------------|
+| 📱 Android | [RemoteWebCam.apk](https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebCam.apk) | Android 5.0+ |
+| 💻 Windows | [RemoteWebcam.exe](https://github.com/AbQaadir/RemoteWebCam/releases/latest/download/RemoteWebcam.exe) | Windows 10+ |
 
 ### 3. Connect and Stream
 
@@ -50,13 +51,6 @@ Download and install [OBS Studio](https://obsproject.com/) - this provides the v
 4. **Open the Windows app** on your PC
 5. **Enter the IP address** and click Connect
 6. **Enable Virtual Camera** to use in video calls!
-
-## 📸 Screenshots
-
-<div align="center">
-<img src="docs/assets/android-screenshot.png" width="200" alt="Android App">
-<img src="docs/assets/desktop-screenshot.png" width="400" alt="Desktop App">
-</div>
 
 ## 🔌 Connection Methods
 
@@ -96,13 +90,12 @@ pyinstaller RemoteWebcam.spec
 ## 📋 Requirements
 
 ### Android
-- Android 5.0 (API 24) or higher
+- Android 5.0 (API 21) or higher
 - Camera permission
 - Wi-Fi connection (or USB cable)
 
 ### Windows
 - Windows 10 or higher
-- Python 3.8+ (for running from source)
 - OBS Studio (for virtual camera)
 - ADB (optional, for USB connection)
 
@@ -123,5 +116,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-Made with ❤️ by <a href="https://github.com/AbQaadir">AbQaadir</a>
+
+**[🌐 Website](https://abqaadir.github.io/RemoteWebCam/)** • 
+**[⭐ Star on GitHub](https://github.com/AbQaadir/RemoteWebCam)** • 
+**[🐛 Report Bug](https://github.com/AbQaadir/RemoteWebCam/issues)**
+
+Made with ❤️ by [AbQaadir](https://github.com/AbQaadir)
+
 </div>
