@@ -26,9 +26,8 @@ venv/
 ENV/
 env/
 
-# PyInstaller
+# PyInstaller (keep .spec files, ignore generated manifests)
 *.manifest
-*.spec
 
 # IDE
 .idea/
@@ -66,7 +65,6 @@ local.properties
 # Build artifacts
 desktop-app/dist/
 desktop-app/build/
-desktop-app/*.spec
 
 # ===== General =====
 # OS files
