@@ -1,0 +1,9 @@
+# Dependencies
+PyQt6>=6.4.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+requests>=2.28.0
+pyvirtualcam>=0.10.0
+
+# For building installer
+pyinstaller>=6.0.0

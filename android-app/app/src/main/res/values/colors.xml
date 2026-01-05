@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Color Palette from user (light to dark) -->
+    <color name="palette_1">#E5E4EB</color>  <!-- Lightest - off white/lavender -->
+    <color name="palette_2">#B4B7C5</color>  <!-- Light gray-blue -->
+    <color name="palette_3">#9A9DAE</color>  <!-- Medium gray-blue -->
+    <color name="palette_4">#86859A</color>  <!-- Gray-purple -->
+    <color name="palette_5">#8A7088</color>  <!-- Muted purple -->
+    <color name="palette_6">#5C4B66</color>  <!-- Deep purple - darkest -->
+    
+    <!-- Dark Mode Colors -->
+    <color name="background_dark">#1A1520</color>      <!-- Very dark purple tint -->
+    <color name="card_background">#2A2333</color>       <!-- Dark purple card -->
+    <color name="card_background_elevated">#362D40</color>
+    <color name="divider">#4A4055</color>
+    
+    <!-- Light Mode Colors -->
+    <color name="background_light">#E5E4EB</color>     <!-- palette_1 -->
+    <color name="card_background_light">#FFFFFF</color>
+    <color name="divider_light">#B4B7C5</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#E5E4EB</color>         <!-- Light text for dark mode -->
+    <color name="text_secondary">#9A9DAE</color>        <!-- palette_3 -->
+    <color name="text_primary_light">#2A2333</color>    <!-- Dark text for light mode -->
+    <color name="text_secondary_light">#5C4B66</color>  <!-- palette_6 -->
+    
+    <!-- Accent Colors -->
+    <color name="accent_primary">#8A7088</color>        <!-- palette_5 - muted purple -->
+    <color name="accent_secondary">#5C4B66</color>      <!-- palette_6 - deep purple -->
+    <color name="accent_blue">#9A9DAE</color>           <!-- palette_3 - for links/highlights -->
+    <color name="accent_purple">#5C4B66</color>         <!-- Deep purple accent -->
+    
+    <!-- Button Colors -->
+    <color name="start_green">#6B8A70</color>           <!-- Muted sage green -->
+    <color name="stop_red">#8A6B70</color>              <!-- Muted dusty rose -->
+    <color name="live_green">#7A9A7E</color>            <!-- Soft green -->
+    <color name="offline_gray">#86859A</color>          <!-- palette_4 -->
+    <color name="button_secondary">#362D40</color>
+    <color name="button_secondary_light">#B4B7C5</color>
+    
+    <!-- Standard Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

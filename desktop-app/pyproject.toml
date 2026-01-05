@@ -1,0 +1,31 @@
+[project]
+name = "remote-webcam"
+version = "1.0.0"
+description = "Desktop client for Remote Webcam - turn your phone into a webcam"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Remote Webcam", email = "contact@example.com"}
+]
+
+dependencies = [
+    "PyQt6>=6.4.0",
+    "opencv-python>=4.8.0",
+    "numpy>=1.24.0",
+    "requests>=2.28.0",
+    "pyvirtualcam>=0.10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pyinstaller>=6.0.0",
+    "pytest>=7.0.0",
+]
+
+[project.scripts]
+remote-webcam = "src.app:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

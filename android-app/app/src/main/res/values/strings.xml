@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Remote Webcam</string>
+    <string name="start_streaming">Start Streaming</string>
+    <string name="stop_streaming">Stop Streaming</string>
+    <string name="switch_camera">Switch Camera</string>
+    <string name="resolution">Resolution</string>
+    <string name="stream_url">Stream URL</string>
+    <string name="connect_info">Connect your PC to this address</string>
+    <string name="no_wifi">No Wi-Fi connection</string>
+    <string name="please_connect_wifi">Please connect to Wi-Fi</string>
+    <string name="streaming_started">Streaming started</string>
+    <string name="streaming_stopped">Streaming stopped</string>
+    <string name="camera_permission_required">Camera permission is required</string>
+    <string name="status_live">● LIVE</string>
+    <string name="status_offline">● OFFLINE</string>
+</resources>

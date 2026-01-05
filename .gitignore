@@ -1,0 +1,103 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ===== Android =====
+# Gradle
+.gradle/
+**/build/
+!src/**/build/
+
+# Local configuration
+local.properties
+*.iml
+
+# Android Studio
+.idea/
+*.hprof
+
+# Android build
+*.apk
+*.aab
+*.dex
+*.class
+*.ap_
+
+# Keystore (never commit!)
+*.jks
+*.keystore
+
+# ===== Desktop App =====
+# Build artifacts
+desktop-app/dist/
+desktop-app/build/
+desktop-app/*.spec
+
+# ===== General =====
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Secrets
+secrets/
+*.pem
+*.key
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# uv/pip lock files (optional - some prefer to commit these)
+# uv.lock
